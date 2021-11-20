@@ -21,12 +21,8 @@ export const uploadCSVToDatabase = (filePath: fs.PathLike) => {
       results.push(data);
     })
     .on("end", async () => {
-      console.log(header);
-      console.log(results.length);
       // Map with header index for O(N) access
       const headerMap = generateMapFromResults(header);
-      console.log(headerMap);
-      console.log(typeof results);
       await storeAllCollections(results, headerMap);
     });
 };
@@ -86,6 +82,7 @@ const storeAllCollections = (
       // const accountType = headerMap.get("accountType");
 
       const agentMap = new Map();
+      const userAccountMap = new Map();
       for (let i = 0; i < results.length; i++) {
         // for user Collection
         const user = User.build({
@@ -108,6 +105,14 @@ const storeAllCollections = (
           });
           agentMap.set(agent, true);
           await agentToSave.save();
+        }
+        const accountName = results[i].account_name;
+        if (!userAccountMap.get(accountName)) {
+          const accountToSave = UserAccount.build({
+            accountName,
+          });
+          userAccountMap.set(accountName, true);
+          await accountToSave.save();
         }
       }
       resolve("ALL COLLECTION SAVED");

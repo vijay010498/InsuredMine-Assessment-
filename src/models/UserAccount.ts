@@ -16,6 +16,7 @@ const UserAccountSchema = new mongoose.Schema(
     accountName: {
       type: String,
       required: true,
+      unique: true,
     },
   },
   {
