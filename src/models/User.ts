@@ -44,7 +44,6 @@ const UserSchema = new mongoose.Schema(
     phoneNumber: {
       type: String,
       required: true,
-      unique: true,
       index: true,
     },
     state: {

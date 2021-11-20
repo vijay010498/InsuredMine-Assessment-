@@ -1,6 +1,11 @@
 import fs from "fs";
 import csvParser from "csv-parser";
 import { User } from "../../models/User";
+import { Agent } from "../../models/Agent";
+import { UserAccount } from "../../models/UserAccount";
+import { PolicyCategory } from "../../models/PolicyCategory";
+import { PolicyCarrier } from "../../models/PolicyCarrier";
+import { PolicyInfo } from "../../models/PolicyInfo";
 
 export const uploadCSVToDatabase = (filePath: fs.PathLike) => {
   const results: any[] = [];
@@ -80,7 +85,7 @@ const storeAllCollections = (
       // const genderIndex = headerMap.get("gender");
       // const accountType = headerMap.get("accountType");
 
-      // Iterate through all the results / rows and  store in the collection
+      const agentMap = new Map();
       for (let i = 0; i < results.length; i++) {
         // for user Collection
         const user = User.build({
@@ -95,6 +100,15 @@ const storeAllCollections = (
           zipCode: results[i].zip,
         });
         await user.save();
+        // AGENT
+        const agent = results[i].agent;
+        if (!agentMap.get(agent)) {
+          const agentToSave = Agent.build({
+            agentName: agent,
+          });
+          agentMap.set(agent, true);
+          await agentToSave.save();
+        }
       }
       resolve("ALL COLLECTION SAVED");
     } catch (err) {

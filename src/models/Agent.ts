@@ -16,6 +16,7 @@ const AgentSchema = new mongoose.Schema(
     agentName: {
       type: String,
       required: true,
+      unique: true,
     },
   },
   {
