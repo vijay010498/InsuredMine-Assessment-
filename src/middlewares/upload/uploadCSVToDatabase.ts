@@ -83,6 +83,7 @@ const storeAllCollections = (
 
       const agentMap = new Map();
       const userAccountMap = new Map();
+      const policyCategoryMap = new Map();
       for (let i = 0; i < results.length; i++) {
         // for user Collection
         const user = User.build({
@@ -113,6 +114,14 @@ const storeAllCollections = (
           });
           userAccountMap.set(accountName, true);
           await accountToSave.save();
+        }
+        const policyCategory = results[i].category_name;
+        if (!policyCategoryMap.get(policyCategory)) {
+          const policyCategoryToSave = PolicyCategory.build({
+            categoryName: policyCategory,
+          });
+          policyCategoryMap.set(policyCategory, true);
+          await policyCategoryToSave.save();
         }
       }
       resolve("ALL COLLECTION SAVED");

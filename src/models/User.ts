@@ -55,7 +55,6 @@ const UserSchema = new mongoose.Schema(
     email: {
       type: String,
       index: true,
-      unique: true,
     },
     gender: {
       type: String,
