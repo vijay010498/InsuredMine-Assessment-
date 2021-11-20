@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 
 interface AgentAttrs {
-  agentName: string;
+  agentName: String;
 }
 
 interface AgentModel extends mongoose.Model<AgentDoc> {
   build(attrs: AgentAttrs): AgentDoc;
 }
 interface AgentDoc extends mongoose.Document {
-  agentName: string;
+  agentName: String;
 }
 
 const AgentSchema = new mongoose.Schema(
