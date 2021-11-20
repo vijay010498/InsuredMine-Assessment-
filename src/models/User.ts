@@ -6,10 +6,10 @@ interface UserAttrs {
   address: String;
   phoneNumber: String;
   state: String;
-  zipCode: Number;
+  zipCode: String;
   email: String;
   gender: String;
-  userType: String;
+  accountType: String;
 }
 
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -22,10 +22,10 @@ interface UserDoc extends mongoose.Document {
   address: String;
   phoneNumber: String;
   state: String;
-  zipCode: Number;
+  zipCode: String;
   email: String;
   gender: String;
-  userType: String;
+  accountType: String;
 }
 
 const UserSchema = new mongoose.Schema(
@@ -40,7 +40,6 @@ const UserSchema = new mongoose.Schema(
     },
     address: {
       type: String,
-      required: true,
     },
     phoneNumber: {
       type: String,
@@ -50,23 +49,20 @@ const UserSchema = new mongoose.Schema(
     },
     state: {
       type: String,
-      required: true,
     },
     zipCode: {
-      type: Number,
-      required: true,
+      type: String,
     },
     email: {
       type: String,
-      required: true,
       index: true,
       unique: true,
     },
     gender: {
       type: String,
-      required: true,
+      default: "NA",
     },
-    userType: {
+    accountType: {
       type: String,
       required: true,
     },
