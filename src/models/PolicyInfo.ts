@@ -5,6 +5,7 @@ interface PolicyInfoAttrs {
   policyStartDate: mongoose.Schema.Types.Date;
   policyEndDate: mongoose.Schema.Types.Date;
   policyCategory: String;
+  policyCarrier: String;
   userId: string;
 }
 
@@ -17,6 +18,7 @@ interface PolicyInfoDoc extends mongoose.Document {
   policyStartDate: mongoose.Schema.Types.Date;
   policyEndDate: mongoose.Schema.Types.Date;
   policyCategory: String;
+  policyCarrier: String;
   userId: string;
 }
 
@@ -36,7 +38,13 @@ const PolicyInfoSchema = new mongoose.Schema(
       required: true,
     },
     policyCategory: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "policyCategory",
+      required: true,
+    },
+    policyCarrier: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "PolicyCarrier",
       required: true,
     },
     userId: {
