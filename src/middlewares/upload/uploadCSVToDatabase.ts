@@ -23,7 +23,8 @@ export const uploadCSVToDatabase = (filePath: fs.PathLike) => {
     .on("end", async () => {
       // Map with header index for O(N) access
       const headerMap = generateMapFromResults(header);
-      await storeAllCollections(results, headerMap);
+      const store = await storeAllCollections(results, headerMap);
+      console.log(store);
     });
 };
 
@@ -84,6 +85,9 @@ const storeAllCollections = (
       const agentMap = new Map();
       const userAccountMap = new Map();
       const policyCategoryMap = new Map();
+      const policyCategoryIDMap = new Map();
+      const policyCarrierMap = new Map();
+      const policyCompanyIDMap = new Map();
       for (let i = 0; i < results.length; i++) {
         // for user Collection
         const user = User.build({
@@ -121,9 +125,28 @@ const storeAllCollections = (
             categoryName: policyCategory,
           });
           policyCategoryMap.set(policyCategory, true);
-          await policyCategoryToSave.save();
+          await policyCategoryToSave.save(function (err, policyCat) {
+            if (!policyCategoryIDMap.get(policyCategory)) {
+              policyCategoryIDMap.set(policyCategory, policyCat._id);
+            }
+          });
+        }
+        // Policy carrier collection
+        const policyCarrier = results[i].company_name;
+        if (!policyCarrierMap.get(policyCarrier)) {
+          const policyCarrierToSave = PolicyCarrier.build({
+            companyName: policyCarrier,
+          });
+          policyCarrierMap.set(policyCarrier, true);
+          await policyCarrierToSave.save(function (err, policyCarrierT) {
+            if (!policyCompanyIDMap.get(policyCarrier)) {
+              policyCompanyIDMap.set(policyCarrier, policyCarrierT._id);
+            }
+          });
         }
       }
+      console.log(policyCompanyIDMap);
+      console.log(policyCategoryIDMap);
       resolve("ALL COLLECTION SAVED");
     } catch (err) {
       reject(err);
