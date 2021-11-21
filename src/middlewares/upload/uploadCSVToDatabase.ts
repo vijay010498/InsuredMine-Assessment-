@@ -82,7 +82,10 @@ const storeAllCollections = (
       // const genderIndex = headerMap.get("gender");
       // const accountType = headerMap.get("accountType");
 
+      const userMap = new Map();
+      const userIDMap = new Map();
       const agentMap = new Map();
+      const agentIDMap = new Map();
       const userAccountMap = new Map();
       const policyCategoryMap = new Map();
       const policyCategoryIDMap = new Map();
@@ -90,18 +93,25 @@ const storeAllCollections = (
       const policyCompanyIDMap = new Map();
       for (let i = 0; i < results.length; i++) {
         // for user Collection
-        const user = User.build({
-          DOB: results[i].dob,
-          accountType: results[i].account_type,
-          address: results[i].address,
-          email: results[i].email,
-          firstName: results[i].firstname,
-          gender: results[i].gender,
-          phoneNumber: results[i].phone,
-          state: results[i].state,
-          zipCode: results[i].zip,
-        });
-        await user.save();
+        if (!userMap.get(results[i].phone)) {
+          const user = User.build({
+            DOB: results[i].dob,
+            accountType: results[i].account_type,
+            address: results[i].address,
+            email: results[i].email,
+            firstName: results[i].firstname,
+            gender: results[i].gender,
+            phoneNumber: results[i].phone,
+            state: results[i].state,
+            zipCode: results[i].zip,
+          });
+          userMap.set(results[i].phone, true);
+          await user.save(function (err, userT) {
+            if (!userIDMap.get(results[i].phone))
+              userIDMap.set(results[i].phone, userT._id);
+          });
+        }
+
         // AGENT
         const agent = results[i].agent;
         if (!agentMap.get(agent)) {
@@ -109,7 +119,11 @@ const storeAllCollections = (
             agentName: agent,
           });
           agentMap.set(agent, true);
-          await agentToSave.save();
+          await agentToSave.save(function (err, agentT) {
+            if (!agentIDMap.get(agent)) {
+              agentIDMap.set(agent, agentT._id);
+            }
+          });
         }
         const accountName = results[i].account_name;
         if (!userAccountMap.get(accountName)) {
@@ -144,7 +158,11 @@ const storeAllCollections = (
             }
           });
         }
+
+        // Policy Info
       }
+      console.log(userIDMap);
+      console.log(agentIDMap);
       console.log(policyCompanyIDMap);
       console.log(policyCategoryIDMap);
       resolve("ALL COLLECTION SAVED");
