@@ -6,7 +6,7 @@ interface PolicyInfoAttrs {
   policyEndDate: mongoose.Schema.Types.Date;
   policyCategory: String;
   policyCarrier: String;
-  userId: string;
+  userId: String;
 }
 
 interface PolicyInfoModel extends mongoose.Model<PolicyInfoDoc> {
@@ -19,7 +19,7 @@ interface PolicyInfoDoc extends mongoose.Document {
   policyEndDate: mongoose.Schema.Types.Date;
   policyCategory: String;
   policyCarrier: String;
-  userId: string;
+  userId: String;
 }
 
 const PolicyInfoSchema = new mongoose.Schema(

@@ -158,14 +158,50 @@ const storeAllCollections = (
             }
           });
         }
-
-        // Policy Info
       }
       console.log(userIDMap);
       console.log(agentIDMap);
       console.log(policyCompanyIDMap);
       console.log(policyCategoryIDMap);
+      await storePolicyInfo(
+        results,
+        policyCompanyIDMap,
+        policyCategoryIDMap,
+        userIDMap
+      );
       resolve("ALL COLLECTION SAVED");
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+const storePolicyInfo = (
+  results: any[],
+  policyCompanyIDMap: Map<String, String>,
+  policyCategoryIDMap: Map<String, String>,
+  userIDMap: Map<String, String>
+) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const policyInfoMap = new Map();
+      for (let i = 0; i < results.length; i++) {
+        const policyNumber = results[i].policy_number;
+        if (!policyInfoMap.get(policyNumber)) {
+          const policyInfoToSave = PolicyInfo.build({
+            policyCarrier:
+              policyCompanyIDMap.get(results[i].company_name) || "",
+            policyCategory:
+              policyCategoryIDMap.get(results[i].category_name) || "",
+            policyEndDate: results[i].policy_end_date,
+            policyNumber,
+            policyStartDate: results[i].policy_start_date,
+            userId: userIDMap.get(results[i].phone) || "",
+          });
+          await policyInfoToSave.save();
+          resolve("Policy INFO Collection Uploaded");
+        }
+      }
     } catch (err) {
       reject(err);
     }
