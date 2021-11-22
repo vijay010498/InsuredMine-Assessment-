@@ -10,7 +10,6 @@ router.post(
   "/api/upload",
   Upload.single("file"),
   async (req: Request, res: Response) => {
-    console.log("FILE", req.file);
     await uploadCSVToDatabase(
       "/Users/vijay/Desktop/vijay/assessments/insuremind/src/uploads/" +
         req.file?.filename
