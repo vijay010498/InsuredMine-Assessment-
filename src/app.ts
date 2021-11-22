@@ -11,6 +11,7 @@ import { errorhandler, NotFoundError } from "./errors"; //customized and seriali
 //here we will import all the different routes in our server as of this exercise we have only one file
 import { testRouter } from "./routes/test-route";
 import { uploadRouter } from "./routes/upload";
+import { policyRouter } from "./routes/policy";
 
 const app = express(); //express framework
 
@@ -24,6 +25,7 @@ app.set("views", "/Users/vijay/Desktop/vijay/assessments/insuremind/src/views");
 
 app.use(testRouter); //making use of the route imported in the top
 app.use(uploadRouter);
+app.use(policyRouter);
 
 app.use(errorhandler); //making use of the errorhandler imported top
 

@@ -1,17 +1,23 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
-import { PolicyInfo } from "../models/PolicyInfo";
+import { searchPolicyByUsername } from "../middlewares/policies/searchPolicyByUsername";
 
 router.get("/api/v1/policy", async (req: Request, res: Response) => {
   const userName = req.query.userName;
   if (userName) {
     try {
-      const userPolicy = await PolicyInfo.find({});
+      // @ts-ignore
+      const policy = await searchPolicyByUsername(userName);
+      res.status(200).send({
+        policy,
+      });
     } catch (err) {
-      console.error(err);
-      return res.status(400).send({
+      res.status(500).send({
         message: "Something went wrong",
+        error: err,
       });
     }
   }
 });
+
+export { router as policyRouter };
