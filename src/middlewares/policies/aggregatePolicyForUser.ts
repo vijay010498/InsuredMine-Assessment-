@@ -5,7 +5,6 @@ export const aggregatePolicyForUser = async (policies: any[]) => {
     try {
       const policiesMap = {};
       for (let i = 0; i < policies.length; i++) {
-        console.log(policies[i]);
         // @ts-ignore
         if (!policiesMap[policies[i].user[0]._id]) {
           // @ts-ignore

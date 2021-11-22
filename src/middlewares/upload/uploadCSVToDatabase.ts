@@ -22,9 +22,7 @@ export const uploadCSVToDatabase = (filePath: fs.PathLike) => {
     })
     .on("end", async () => {
       // Map with header index for O(N) access
-      const headerMap = generateMapFromResults(header);
-      const store = await storeAllCollections(results, headerMap);
-      console.log(store);
+      await storeAllCollections(results);
     });
 };
 
@@ -65,23 +63,9 @@ const generateMapFromResults = (headers: any[] = []) => {
   return indexMap;
 };
 
-const storeAllCollections = (
-  results: any[],
-  headerMap: Map<String, Number>
-) => {
+const storeAllCollections = (results: any[]) => {
   return new Promise(async function (resolve, reject) {
     try {
-      // indexes
-      // const firstNameIndex = headerMap.get("firstName");
-      // const DOBIndex = headerMap.get("DOB");
-      // const addressIndex = headerMap.get("address");
-      // const phoneNumberIndex = headerMap.get("phoneNumber");
-      // const stateIndex = headerMap.get("state");
-      // const zipIndex = headerMap.get("zip");
-      // const emailIndex = headerMap.get("email");
-      // const genderIndex = headerMap.get("gender");
-      // const accountType = headerMap.get("accountType");
-
       const userMap = new Map();
       const userIDMap = new Map();
       const agentMap = new Map();
@@ -160,10 +144,6 @@ const storeAllCollections = (
           });
         }
       }
-      console.log(userIDMap);
-      console.log(agentIDMap);
-      console.log(policyCompanyIDMap);
-      console.log(policyCategoryIDMap);
       await storePolicyInfo(
         results,
         policyCompanyIDMap,
