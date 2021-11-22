@@ -10,6 +10,7 @@ interface UserAttrs {
   email: String;
   gender: String;
   accountType: String;
+  accountName: String;
 }
 
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -26,6 +27,7 @@ interface UserDoc extends mongoose.Document {
   email: String;
   gender: String;
   accountType: String;
+  accountName: String;
 }
 
 const UserSchema = new mongoose.Schema(
@@ -63,6 +65,11 @@ const UserSchema = new mongoose.Schema(
     accountType: {
       type: String,
       required: true,
+    },
+    accountName: {
+      type: String,
+      required: true,
+      unique: true,
     },
   },
   {

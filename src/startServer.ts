@@ -20,7 +20,7 @@ const startServer = async () => {
     console.log(err);
   }
 
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 2000;
   app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
   });

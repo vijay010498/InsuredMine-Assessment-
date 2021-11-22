@@ -104,6 +104,7 @@ const storeAllCollections = (
             phoneNumber: results[i].phone,
             state: results[i].state,
             zipCode: results[i].zip,
+            accountName: results[i].account_name,
           });
           userMap.set(results[i].phone, true);
           await user.save(function (err, userT) {
