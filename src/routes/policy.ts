@@ -1,10 +1,8 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
 import { searchPolicyByUsername } from "../middlewares/policies/searchPolicyByUsername";
-import { getAllUsers } from "../middlewares/user/user";
 import { aggregatePolicyForUser } from "../middlewares/policies/aggregatePolicyForUser";
 import { getAllPolicies } from "../middlewares/policies/policy";
-
 router.get("/api/v1/policy", async (req: Request, res: Response) => {
   const userName = req.query.userName;
   try {
